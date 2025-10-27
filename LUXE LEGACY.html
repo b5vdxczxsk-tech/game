@@ -19,7 +19,7 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 100%);
+            background: #000000;
             color: #d4af37;
             min-height: 100vh;
             overflow-x: hidden;
@@ -40,7 +40,7 @@
             top: 0;
             left: 0;
             right: 0;
-            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 100%);
+            background: #000000;
             z-index: 1000;
             padding: 15px 10px 10px 10px;
             border-bottom: 2px solid #d4af37;
@@ -244,7 +244,7 @@
         }
 
         .investment-name {
-            font-size: 1.1em;
+            font-size: 1.2em;
             font-weight: 600;
             margin-bottom: 8px;
             color: #ffffff;
@@ -252,21 +252,21 @@
 
         .investment-details {
             color: #b0b0b0;
-            font-size: 0.8em;
+            font-size: 0.9em;
             margin-bottom: 10px;
             line-height: 1.3;
         }
 
         .investment-cost {
             color: #d4af37;
-            font-size: 1em;
+            font-size: 1.1em;
             font-weight: 600;
             margin-bottom: 5px;
         }
 
         .investment-return {
             color: #00ff88;
-            font-size: 0.9em;
+            font-size: 1em;
             font-weight: 600;
         }
 
@@ -276,7 +276,7 @@
 
         .risk-indicator {
             color: #ff6b6b;
-            font-size: 0.8em;
+            font-size: 0.9em;
             margin-top: 5px;
             font-weight: 600;
         }
@@ -388,7 +388,7 @@
             border-bottom: none;
         }
 
-        /* Timeline */
+        /* Timeline - Ausschließlich in Gold */
         .timeline {
             background: rgba(255, 255, 255, 0.05);
             border-radius: 10px;
@@ -399,7 +399,7 @@
 
         .timeline-bar {
             height: 8px;
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(212, 175, 55, 0.3);
             border-radius: 4px;
             margin: 10px 0;
             position: relative;
@@ -408,7 +408,7 @@
 
         .timeline-progress {
             height: 100%;
-            background: linear-gradient(90deg, #d4af37, #ffd700);
+            background: #d4af37; /* Ausschließlich Gold */
             border-radius: 4px;
             transition: width 0.3s ease;
         }
@@ -525,6 +525,36 @@
             margin-bottom: 30px;
         }
 
+        /* Bankruptcy Screen */
+        .bankruptcy-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .bankruptcy-title {
+            font-size: 2.5em;
+            color: #ff6b6b;
+            margin-bottom: 20px;
+            text-shadow: 0 0 20px rgba(255, 107, 107, 0.5);
+        }
+
+        .bankruptcy-subtitle {
+            font-size: 1.2em;
+            color: #ffffff;
+            margin-bottom: 30px;
+        }
+
         /* Responsive */
         @media (max-width: 380px) {
             .investment-grid {
@@ -578,7 +608,7 @@
                 </div>
                 
                 <div class="year-display">
-                    <div class="year-amount" id="year">2024</div>
+                    <div class="year-amount" id="year">2025</div>
                     <div class="year-label">JAHR</div>
                 </div>
             </div>
@@ -602,7 +632,7 @@
                 <div class="timeline-marker" id="currentYearMarker" style="left: 0%"></div>
             </div>
             <div class="timeline-labels">
-                <span>2024</span>
+                <span>2025</span>
                 <span>2050</span>
             </div>
         </div>
@@ -620,7 +650,7 @@
             </div>
             <div class="goal-item">
                 <div class="goal-text">Noch verbleibende Zeit</div>
-                <div class="goal-progress" id="goalYear">26 Jahre</div>
+                <div class="goal-progress" id="goalYear">25 Jahre</div>
             </div>
         </div>
 
@@ -649,12 +679,12 @@
             <!-- Wird dynamisch gefüllt -->
         </div>
 
-        <!-- Luxury Assets -->
+        <!-- Luxury Assets - Korrekte Beschriftung und Emojis -->
         <div class="luxury-section">
             <div class="luxury-title">🛳️ LUXUS ASSETS</div>
             <div class="luxury-items">
                 <div class="luxury-item" data-asset="yacht" onclick="buyLuxuryAsset('yacht')">
-                    ⛵ Mega-Yacht<br>
+                    🛥️ Mega-Yacht<br>
                     <small>€ 50M</small>
                 </div>
                 <div class="luxury-item" data-asset="jet" onclick="buyLuxuryAsset('jet')">
@@ -666,7 +696,7 @@
                     <small>€ 200M</small>
                 </div>
                 <div class="luxury-item" data-asset="villa" onclick="buyLuxuryAsset('villa')">
-                    🏰 Anwesen<br>
+                    🏰 Luxus-Villa<br>
                     <small>€ 30M</small>
                 </div>
             </div>
@@ -709,6 +739,13 @@
         <button class="action-btn" onclick="restartGame()">NEUES SPIEL</button>
     </div>
 
+    <!-- Bankruptcy Screen -->
+    <div class="bankruptcy-screen" id="bankruptcyScreen">
+        <h1 class="bankruptcy-title">💸 INSOLVENZ!</h1>
+        <div class="bankruptcy-subtitle" id="bankruptcyMessage">Sie haben die Ziele nicht erreicht und sind insolvent gegangen.</div>
+        <button class="action-btn" onclick="restartGame()">NEUES SPIEL</button>
+    </div>
+
     <script>
         class LuxeLegacyMobile {
             constructor() {
@@ -717,7 +754,7 @@
                 this.influence = 50;
                 this.network = 25;
                 this.quarter = 1;
-                this.year = 2024;
+                this.year = 2025;
                 this.portfolio = {};
                 this.luxuryAssets = new Set();
                 this.crisisActive = false;
@@ -727,7 +764,7 @@
                 this.targetWealth = 1000000000;
                 this.targetYear = 2050;
                 this.targetAssets = 4;
-                this.startYear = 2024;
+                this.startYear = 2025;
                 
                 this.investments = [
                     {
@@ -737,7 +774,7 @@
                         cost: 2000000,
                         return: 0.15,
                         risk: 0.3,
-                        description: 'Innovatives Software-Unternehmen'
+                        description: 'Innovatives Software-Unternehmen mit hohem Wachstumspotential'
                     },
                     {
                         id: 'real-estate',
@@ -746,7 +783,7 @@
                         cost: 5000000,
                         return: 0.08,
                         risk: 0.1,
-                        description: 'Premium Immobilien weltweit'
+                        description: 'Premium Immobilien in weltweit besten Lagen'
                     },
                     {
                         id: 'hedge-fund',
@@ -755,7 +792,7 @@
                         cost: 10000000,
                         return: 0.25,
                         risk: 0.4,
-                        description: 'Hochriskante Fonds-Beteiligung'
+                        description: 'Hochriskante aber renditestarke Fonds-Beteiligung'
                     },
                     {
                         id: 'art-collection',
@@ -764,7 +801,7 @@
                         cost: 3000000,
                         return: 0.12,
                         risk: 0.2,
-                        description: 'Exklusive Kunstwerke'
+                        description: 'Exklusive Kunstwerke von Weltklasse-Künstlern'
                     },
                     {
                         id: 'vineyard',
@@ -773,7 +810,7 @@
                         cost: 4000000,
                         return: 0.07,
                         risk: 0.05,
-                        description: 'Traditionelles Weingut'
+                        description: 'Traditionelles Weingut mit Premium-Trauben'
                     },
                     {
                         id: 'crypto',
@@ -782,7 +819,7 @@
                         cost: 1000000,
                         return: 0.5,
                         risk: 0.8,
-                        description: 'Volatile Kryptowährungen'
+                        description: 'Volatile Kryptowährungen mit extremen Schwankungen'
                     }
                 ];
 
@@ -792,28 +829,32 @@
                         prestige: 50,
                         name: 'Mega-Yacht',
                         description: 'Ihre persönliche 80-Meter-Yacht mit Besatzung',
-                        league: 'Yacht-Club Elite'
+                        league: 'Yacht-Club Elite',
+                        emoji: '🛥️'
                     },
                     jet: { 
                         cost: 75000000, 
                         prestige: 75,
                         name: 'Privatjet',
                         description: 'Gulfstream G650 für weltweite Reisen',
-                        league: 'Global Jet-Set'
+                        league: 'Global Jet-Set',
+                        emoji: '✈️'
                     },
                     island: { 
                         cost: 200000000, 
                         prestige: 200,
                         name: 'Privatinsel',
                         description: 'Eigene Karibik-Insel mit Resort',
-                        league: 'Insel-Magnaten'
+                        league: 'Insel-Magnaten',
+                        emoji: '🏝️'
                     },
                     villa: { 
                         cost: 30000000, 
                         prestige: 30,
-                        name: 'Luxus-Anwesen',
+                        name: 'Luxus-Villa',
                         description: 'Historische Villa in bester Lage',
-                        league: 'Villa-Aristokraten'
+                        league: 'Villa-Aristokraten',
+                        emoji: '🏰'
                     }
                 };
 
@@ -881,6 +922,7 @@
                 this.investmentGrid = document.getElementById('investmentGrid');
                 this.portfolioList = document.getElementById('portfolioList');
                 this.winScreen = document.getElementById('winScreen');
+                this.bankruptcyScreen = document.getElementById('bankruptcyScreen');
                 this.goalWealth = document.getElementById('goalWealth');
                 this.goalAssets = document.getElementById('goalAssets');
                 this.goalYear = document.getElementById('goalYear');
@@ -911,13 +953,13 @@
                 this.updateTimeline();
                 this.updateGoals();
                 this.updateDisplays();
+                this.updateLuxuryAssets();
             }
 
             showActionFeedback(title, message, type = 'positive') {
                 this.feedbackTitle.textContent = title;
                 this.feedbackMessage.innerHTML = message;
                 
-                // Setze die entsprechende CSS-Klasse
                 this.actionFeedback.className = 'action-feedback';
                 if (type === 'positive') {
                     this.actionFeedback.classList.add('feedback-positive');
@@ -927,7 +969,6 @@
                 
                 this.actionFeedback.style.display = 'block';
                 
-                // Nachricht nach 3 Sekunden ausblenden
                 setTimeout(() => {
                     this.actionFeedback.style.display = 'none';
                 }, 3000);
@@ -1015,14 +1056,8 @@
                     this.luxuryAssets.add(asset);
                     this.prestige += item.prestige;
                     
-                    const element = document.querySelector(`[data-asset="${asset}"]`);
-                    element.classList.add('owned');
-                    element.innerHTML = `
-                        ✅ ${element.textContent.split('\n')[0]}<br>
-                        <small>Besessen</small>
-                    `;
+                    this.updateLuxuryAssets();
                     
-                    // Upgrade-Nachricht anzeigen
                     this.showUpgradeNotification(item.name, item.description, item.league, item.prestige);
                     
                     this.updateDisplays();
@@ -1043,6 +1078,27 @@
                 }
             }
 
+            updateLuxuryAssets() {
+                Object.keys(this.luxuryItems).forEach(asset => {
+                    const element = document.querySelector(`[data-asset="${asset}"]`);
+                    const item = this.luxuryItems[asset];
+                    
+                    if (this.luxuryAssets.has(asset)) {
+                        element.classList.add('owned');
+                        element.innerHTML = `
+                            ${item.emoji} ${item.name}<br>
+                            <small>Im Besitz</small>
+                        `;
+                    } else {
+                        element.classList.remove('owned');
+                        element.innerHTML = `
+                            ${item.emoji} ${item.name}<br>
+                            <small>€ ${this.formatMoney(item.cost)}</small>
+                        `;
+                    }
+                });
+            }
+
             showUpgradeNotification(assetName, description, league, prestigeBonus) {
                 this.upgradeMessage.innerHTML = `
                     <strong>${assetName}</strong><br>
@@ -1054,7 +1110,7 @@
                 
                 setTimeout(() => {
                     this.upgradeNotification.style.display = 'none';
-                }, 4000);
+                }, 6000);
             }
 
             nextQuarter() {
@@ -1152,7 +1208,7 @@
                 this.checkWinConditions();
                 
                 if (this.year > this.targetYear) {
-                    this.gameOver();
+                    this.checkBankruptcy();
                 }
             }
 
@@ -1353,8 +1409,15 @@
                     this.showWinScreen('🎉 VOLLSTÄNDIGER ERFOLG!<br>Sie haben alle Ziele vor 2050 erreicht!');
                 } else if (wealthAchieved && assetsAchieved) {
                     this.showWinScreen('💰 MILLIARDÄR MIT VOLLER SAMMLUNG!<br>Leider nach dem Zieljahr 2050.');
-                } else if (this.year > this.targetYear) {
-                    this.gameOver();
+                }
+            }
+
+            checkBankruptcy() {
+                const wealthAchieved = this.wealth >= this.targetWealth;
+                const assetsAchieved = this.luxuryAssets.size >= this.targetAssets;
+                
+                if (!wealthAchieved || !assetsAchieved) {
+                    this.showBankruptcyScreen();
                 }
             }
 
@@ -1364,17 +1427,22 @@
                 document.body.classList.add('celebrating');
             }
 
-            gameOver() {
+            showBankruptcyScreen() {
                 const wealthAchieved = this.wealth >= this.targetWealth;
                 const assetsAchieved = this.luxuryAssets.size >= this.targetAssets;
                 
-                if (wealthAchieved && !assetsAchieved) {
-                    this.showWinScreen('💰 MILLIARDÄR!<br>Sie haben das Vermögensziel erreicht, aber nicht alle Luxus-Assets gesammelt.');
-                } else if (!wealthAchieved && assetsAchieved) {
-                    this.showWinScreen('🛳️ VOLLE SAMMLUNG!<br>Sie haben alle Luxus-Assets, aber das Vermögensziel nicht erreicht.');
+                let message = '💸 INSOLVENZ!<br>';
+                
+                if (!wealthAchieved && !assetsAchieved) {
+                    message += 'Sie haben weder das Vermögensziel noch alle Luxus-Assets erreicht.';
+                } else if (!wealthAchieved) {
+                    message += 'Sie haben alle Luxus-Assets, aber das Vermögensziel nicht erreicht.';
                 } else {
-                    this.showWinScreen('⏰ ZEIT ABGELAUFEN<br>Sie haben die Ziele nicht vor 2050 erreicht.');
+                    message += 'Sie haben das Vermögensziel erreicht, aber nicht alle Luxus-Assets gesammelt.';
                 }
+                
+                document.getElementById('bankruptcyMessage').innerHTML = message;
+                this.bankruptcyScreen.style.display = 'flex';
             }
 
             formatMoney(amount) {
