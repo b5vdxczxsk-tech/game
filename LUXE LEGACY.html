@@ -2,13 +2,19 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Luxe Legacy - Mobile</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
         }
 
         body {
@@ -18,7 +24,14 @@
             min-height: 100vh;
             overflow-x: hidden;
             padding: 10px;
-            padding-top: 180px; /* Platz für fixed Header */
+            padding-top: 200px;
+            touch-action: pan-y;
+        }
+
+        /* Zoom Prevention */
+        html {
+            -webkit-text-size-adjust: 100%;
+            text-size-adjust: 100%;
         }
 
         /* Fixed Header */
@@ -29,8 +42,9 @@
             right: 0;
             background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 100%);
             z-index: 1000;
-            padding: 10px;
+            padding: 15px 10px 10px 10px;
             border-bottom: 2px solid #d4af37;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
         }
 
         .game-container {
@@ -41,7 +55,7 @@
         /* Header */
         .header {
             text-align: center;
-            padding: 10px 0;
+            padding: 5px 0;
         }
 
         .game-title {
@@ -49,11 +63,20 @@
             font-weight: 700;
             color: #d4af37;
             text-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
-            margin-bottom: 10px;
+            margin-bottom: 15px;
         }
 
-        .wealth-display {
-            margin-bottom: 10px;
+        .wealth-year-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            gap: 20px;
+        }
+
+        .wealth-display, .year-display {
+            flex: 1;
+            text-align: center;
         }
 
         .wealth-amount {
@@ -63,6 +86,18 @@
         }
 
         .wealth-label {
+            font-size: 0.9em;
+            color: #d4af37;
+            opacity: 0.8;
+        }
+
+        .year-amount {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .year-label {
             font-size: 0.9em;
             color: #d4af37;
             opacity: 0.8;
@@ -353,47 +388,6 @@
             border-bottom: none;
         }
 
-        /* Event Popup */
-        .event-popup {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            display: none;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            padding: 20px;
-        }
-
-        .event-content {
-            background: linear-gradient(145deg, #1a1a1a, #2d2d2d);
-            border: 2px solid #d4af37;
-            border-radius: 15px;
-            padding: 25px;
-            max-width: 400px;
-            text-align: center;
-        }
-
-        .event-content.crisis {
-            border-color: #ff6b6b;
-        }
-
-        .event-title {
-            font-size: 1.5em;
-            color: #ffffff;
-            margin-bottom: 15px;
-        }
-
-        .event-description {
-            color: #b0b0b0;
-            margin-bottom: 20px;
-            line-height: 1.4;
-        }
-
         /* Timeline */
         .timeline {
             background: rgba(255, 255, 255, 0.05);
@@ -434,6 +428,73 @@
             color: #b0b0b0;
         }
 
+        /* Action Feedback */
+        .action-feedback {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(145deg, #1a1a1a, #2d2d2d);
+            border: 2px solid #d4af37;
+            border-radius: 15px;
+            padding: 25px;
+            max-width: 320px;
+            text-align: center;
+            z-index: 1500;
+            display: none;
+            animation: celebrate 0.5s ease-in-out;
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
+        }
+
+        .feedback-title {
+            color: #d4af37;
+            font-size: 1.4em;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .feedback-positive {
+            border-color: #00ff88;
+        }
+
+        .feedback-positive .feedback-title {
+            color: #00ff88;
+        }
+
+        .feedback-negative {
+            border-color: #ff6b6b;
+        }
+
+        .feedback-negative .feedback-title {
+            color: #ff6b6b;
+        }
+
+        /* Upgrade Notification */
+        .upgrade-notification {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(145deg, #1a1a1a, #2d2d2d);
+            border: 2px solid #00ff88;
+            border-radius: 15px;
+            padding: 25px;
+            max-width: 320px;
+            text-align: center;
+            z-index: 1500;
+            display: none;
+            animation: celebrate 0.5s ease-in-out 3;
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.3);
+        }
+
+        .upgrade-title {
+            color: #00ff88;
+            font-size: 1.4em;
+            font-weight: 700;
+            margin-bottom: 15px;
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+        }
+
         /* Win Screen */
         .win-screen {
             position: fixed;
@@ -464,23 +525,6 @@
             margin-bottom: 30px;
         }
 
-        /* Upgrade Notification */
-        .upgrade-notification {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: linear-gradient(145deg, #1a1a1a, #2d2d2d);
-            border: 2px solid #00ff88;
-            border-radius: 15px;
-            padding: 20px;
-            max-width: 300px;
-            text-align: center;
-            z-index: 1500;
-            display: none;
-            animation: celebrate 0.5s ease-in-out 3;
-        }
-
         /* Responsive */
         @media (max-width: 380px) {
             .investment-grid {
@@ -496,18 +540,28 @@
             }
             
             body {
-                padding-top: 200px;
+                padding-top: 220px;
+            }
+            
+            .wealth-year-container {
+                flex-direction: column;
+                gap: 10px;
             }
         }
 
         /* Animations */
         @keyframes celebrate {
             0%, 100% { transform: translate(-50%, -50%) scale(1); }
-            50% { transform: translate(-50%, -50%) scale(1.1); }
+            50% { transform: translate(-50%, -50%) scale(1.05); }
         }
 
         .celebrating {
             animation: celebrate 0.5s ease-in-out 3;
+        }
+
+        /* Spacer for better layout */
+        .section-spacer {
+            height: 10px;
         }
     </style>
 </head>
@@ -516,12 +570,18 @@
     <div class="fixed-header">
         <div class="header">
             <h1 class="game-title">LUXE LEGACY</h1>
-            <div class="wealth-display">
-                <div class="wealth-amount" id="wealth">€ 10.000.000</div>
-                <div class="wealth-label">VERMÖGEN</div>
+            
+            <div class="wealth-year-container">
+                <div class="wealth-display">
+                    <div class="wealth-amount" id="wealth">€ 10.000.000</div>
+                    <div class="wealth-label">VERMÖGEN</div>
+                </div>
+                
+                <div class="year-display">
+                    <div class="year-amount" id="year">2024</div>
+                    <div class="year-label">JAHR</div>
+                </div>
             </div>
-            <div class="status-value" id="year">2024</div>
-            <div class="status-label">JAHR</div>
         </div>
 
         <!-- Crisis Indicator -->
@@ -531,6 +591,9 @@
     </div>
 
     <div class="game-container">
+        <!-- Spacer for better visual separation -->
+        <div class="section-spacer"></div>
+
         <!-- Timeline -->
         <div class="timeline">
             <div style="text-align: center; margin-bottom: 10px; font-weight: 600;">ZEITLINIE BIS 2050</div>
@@ -627,9 +690,15 @@
         </div>
     </div>
 
+    <!-- Action Feedback -->
+    <div class="action-feedback" id="actionFeedback">
+        <h2 class="feedback-title" id="feedbackTitle">AKTION ERFOLGREICH</h2>
+        <div id="feedbackMessage">Ihre Aktion wurde durchgeführt.</div>
+    </div>
+
     <!-- Upgrade Notification -->
     <div class="upgrade-notification" id="upgradeNotification">
-        <h2 style="color: #00ff88; margin-bottom: 10px;">🎉 UPGRADE ERWORBEN!</h2>
+        <h2 class="upgrade-title">🎉 WILLKOMMEN IN DER NÄCHSTEN LIGA!</h2>
         <div id="upgradeMessage">Sie haben ein neues Luxus-Asset erworben!</div>
     </div>
 
@@ -643,7 +712,7 @@
     <script>
         class LuxeLegacyMobile {
             constructor() {
-                this.wealth = 10000000; // 10 Millionen Startkapital
+                this.wealth = 10000000;
                 this.prestige = 100;
                 this.influence = 50;
                 this.network = 25;
@@ -655,10 +724,9 @@
                 this.crisisDuration = 0;
                 this.crisisType = '';
                 
-                // Endziele - Bis 2050 erreichen
-                this.targetWealth = 1000000000; // 1 Milliarde
-                this.targetYear = 2050; // 26 Jahre Zeit
-                this.targetAssets = 4; // Alle Luxus-Assets
+                this.targetWealth = 1000000000;
+                this.targetYear = 2050;
+                this.targetAssets = 4;
                 this.startYear = 2024;
                 
                 this.investments = [
@@ -723,29 +791,32 @@
                         cost: 50000000, 
                         prestige: 50,
                         name: 'Mega-Yacht',
-                        description: 'Ihre persönliche 80-Meter-Yacht mit Besatzung'
+                        description: 'Ihre persönliche 80-Meter-Yacht mit Besatzung',
+                        league: 'Yacht-Club Elite'
                     },
                     jet: { 
                         cost: 75000000, 
                         prestige: 75,
                         name: 'Privatjet',
-                        description: 'Gulfstream G650 für weltweite Reisen'
+                        description: 'Gulfstream G650 für weltweite Reisen',
+                        league: 'Global Jet-Set'
                     },
                     island: { 
                         cost: 200000000, 
                         prestige: 200,
                         name: 'Privatinsel',
-                        description: 'Eigene Karibik-Insel mit Resort'
+                        description: 'Eigene Karibik-Insel mit Resort',
+                        league: 'Insel-Magnaten'
                     },
                     villa: { 
                         cost: 30000000, 
                         prestige: 30,
                         name: 'Luxus-Anwesen',
-                        description: 'Historische Villa in bester Lage'
+                        description: 'Historische Villa in bester Lage',
+                        league: 'Villa-Aristokraten'
                     }
                 };
 
-                // Wirtschaftskrisen-Definitionen
                 this.crises = [
                     {
                         name: "Immobilienblase",
@@ -820,11 +891,46 @@
                 this.galaBtn = document.getElementById('galaBtn');
                 this.upgradeNotification = document.getElementById('upgradeNotification');
                 this.upgradeMessage = document.getElementById('upgradeMessage');
+                this.actionFeedback = document.getElementById('actionFeedback');
+                this.feedbackTitle = document.getElementById('feedbackTitle');
+                this.feedbackMessage = document.getElementById('feedbackMessage');
+
+                document.addEventListener('gesturestart', function (e) {
+                    e.preventDefault();
+                });
+                
+                document.addEventListener('gesturechange', function (e) {
+                    e.preventDefault();
+                });
+                
+                document.addEventListener('gestureend', function (e) {
+                    e.preventDefault();
+                });
 
                 this.renderInvestments();
                 this.updateTimeline();
                 this.updateGoals();
                 this.updateDisplays();
+            }
+
+            showActionFeedback(title, message, type = 'positive') {
+                this.feedbackTitle.textContent = title;
+                this.feedbackMessage.innerHTML = message;
+                
+                // Setze die entsprechende CSS-Klasse
+                this.actionFeedback.className = 'action-feedback';
+                if (type === 'positive') {
+                    this.actionFeedback.classList.add('feedback-positive');
+                } else if (type === 'negative') {
+                    this.actionFeedback.classList.add('feedback-negative');
+                }
+                
+                this.actionFeedback.style.display = 'block';
+                
+                // Nachricht nach 3 Sekunden ausblenden
+                setTimeout(() => {
+                    this.actionFeedback.style.display = 'none';
+                }, 3000);
             }
 
             renderInvestments() {
@@ -859,97 +965,9 @@
                 });
             }
 
-            checkForCrisis() {
-                // Prüfe auf geplante Krisen
-                const crisis = this.crises.find(c => c.triggerYear === this.year);
-                if (crisis && !this.crisisActive) {
-                    this.triggerCrisis(crisis);
-                    return;
-                }
-
-                // Zufällige Krisen (5% Chance pro Jahr nach 2025)
-                if (this.year > 2025 && Math.random() < 0.05 && !this.crisisActive) {
-                    const randomCrisis = {
-                        name: "Unerwartete Marktvolatilität",
-                        duration: 2 + Math.floor(Math.random() * 3),
-                        affected: ['all'],
-                        riskMultiplier: 1.5 + Math.random() * 1.0,
-                        returnMultiplier: 0.6 + Math.random() * 0.3
-                    };
-                    this.triggerCrisis(randomCrisis);
-                }
-            }
-
-            triggerCrisis(crisis) {
-                this.crisisActive = true;
-                this.crisisDuration = crisis.duration;
-                this.crisisType = crisis.name;
-                
-                this.crisisIndicator.textContent = `⚠️ ${crisis.name} - Dauer: ${crisis.duration} Quartale`;
-                this.crisisIndicator.classList.add('active');
-                this.crisisBtn.style.display = 'block';
-                
-                // Luxus-Käufe während Krise erschweren
-                document.querySelectorAll('.luxury-item').forEach(item => {
-                    if (!item.classList.contains('owned')) {
-                        item.classList.add('crisis-locked');
-                    }
-                });
-
-                // Investment-Eigenschaften anpassen
-                this.investments.forEach(inv => {
-                    if (crisis.affected.includes('all') || crisis.affected.includes(inv.id)) {
-                        inv.crisisRiskMultiplier = crisis.riskMultiplier;
-                        inv.crisisReturnMultiplier = crisis.returnMultiplier;
-                        inv.originalRisk = inv.risk;
-                        inv.originalReturn = inv.return;
-                        inv.risk *= crisis.riskMultiplier;
-                        inv.return *= crisis.returnMultiplier;
-                    }
-                });
-
-                this.renderInvestments();
-            }
-
-            endCrisis() {
-                this.crisisActive = false;
-                this.crisisIndicator.classList.remove('active');
-                this.crisisBtn.style.display = 'none';
-                
-                // Luxus-Käufe entsperren
-                document.querySelectorAll('.luxury-item').forEach(item => {
-                    item.classList.remove('crisis-locked');
-                });
-
-                // Investments zurücksetzen
-                this.investments.forEach(inv => {
-                    if (inv.originalRisk) {
-                        inv.risk = inv.originalRisk;
-                        inv.return = inv.originalReturn;
-                        delete inv.crisisRiskMultiplier;
-                        delete inv.crisisReturnMultiplier;
-                        delete inv.originalRisk;
-                        delete inv.originalReturn;
-                    }
-                });
-
-                this.renderInvestments();
-            }
-
-            manageCrisis() {
-                if (this.crisisActive) {
-                    const cost = this.wealth * 0.05; // 5% des Vermögens
-                    if (this.wealth >= cost) {
-                        this.wealth -= cost;
-                        this.crisisDuration = Math.max(1, this.crisisDuration - 1); // Krise um 1 Quartal verkürzen
-                        this.prestige += 25;
-                        this.updateDisplays();
-                    }
-                }
-            }
-
             makeInvestment(investment) {
                 if (this.wealth >= investment.cost) {
+                    const oldWealth = this.wealth;
                     this.wealth -= investment.cost;
                     
                     if (!this.portfolio[investment.id]) {
@@ -957,17 +975,42 @@
                     }
                     this.portfolio[investment.id] += investment.cost;
                     
+                    this.showActionFeedback(
+                        '✅ INVESTITION GETÄTIGT',
+                        `<strong>${investment.name}</strong><br>
+                        Investition: € ${this.formatMoney(investment.cost)}<br>
+                        Neues Vermögen: € ${this.formatMoney(this.wealth)}<br><br>
+                        <em>Portfolio erweitert!</em>`,
+                        'positive'
+                    );
+                    
                     this.updatePortfolio();
                     this.updateDisplays();
                     this.checkWinConditions();
+                } else {
+                    this.showActionFeedback(
+                        '❌ NICHT GENUG KAPITAL',
+                        `Sie benötigen € ${this.formatMoney(investment.cost - this.wealth)} mehr<br>für diese Investition.`,
+                        'negative'
+                    );
                 }
             }
 
             buyLuxuryAsset(asset) {
-                if (this.crisisActive) return;
+                if (this.crisisActive) {
+                    this.showActionFeedback(
+                        '❌ KRISENMODUS',
+                        'Luxuskäufe sind während Wirtschaftskrisen gesperrt!',
+                        'negative'
+                    );
+                    return;
+                }
 
                 const item = this.luxuryItems[asset];
                 if (this.wealth >= item.cost && !this.luxuryAssets.has(asset)) {
+                    const oldWealth = this.wealth;
+                    const oldPrestige = this.prestige;
+                    
                     this.wealth -= item.cost;
                     this.luxuryAssets.add(asset);
                     this.prestige += item.prestige;
@@ -980,29 +1023,46 @@
                     `;
                     
                     // Upgrade-Nachricht anzeigen
-                    this.showUpgradeNotification(item.name, item.description);
+                    this.showUpgradeNotification(item.name, item.description, item.league, item.prestige);
                     
                     this.updateDisplays();
                     this.updateGoals();
                     this.checkWinConditions();
+                } else if (this.luxuryAssets.has(asset)) {
+                    this.showActionFeedback(
+                        '✅ BEREITS BESESSEN',
+                        `Sie besitzen dieses Luxus-Asset bereits.`,
+                        'positive'
+                    );
+                } else {
+                    this.showActionFeedback(
+                        '❌ NICHT GENUG KAPITAL',
+                        `Sie benötigen € ${this.formatMoney(item.cost - this.wealth)} mehr<br>für dieses Luxus-Asset.`,
+                        'negative'
+                    );
                 }
             }
 
-            showUpgradeNotification(assetName, description) {
+            showUpgradeNotification(assetName, description, league, prestigeBonus) {
                 this.upgradeMessage.innerHTML = `
                     <strong>${assetName}</strong><br>
                     ${description}<br><br>
-                    <em>Prestige +${this.luxuryItems[assetName.toLowerCase().replace(' ', '-')].prestige}</em>
+                    <em style="color: #ffd700; font-size: 1.1em;">🚀 WILLKOMMEN IN DER ${league.toUpperCase()}!</em><br><br>
+                    <small>+${prestigeBonus} Prestige erhalten</small>
                 `;
                 this.upgradeNotification.style.display = 'block';
                 
-                // Nachricht nach 3 Sekunden ausblenden
                 setTimeout(() => {
                     this.upgradeNotification.style.display = 'none';
-                }, 3000);
+                }, 4000);
             }
 
             nextQuarter() {
+                const oldWealth = this.wealth;
+                const oldInfluence = this.influence;
+                const oldPrestige = this.prestige;
+                const oldNetwork = this.network;
+                
                 this.quarter++;
                 if (this.quarter > 4) {
                     this.quarter = 1;
@@ -1012,7 +1072,7 @@
                     this.prestige += Math.floor(this.wealth / 10000000);
                     this.network += Math.floor(this.influence / 5);
                     
-                    // Marktvolatilität - Langfristige Trends
+                    // Marktvolatilität
                     this.investments.forEach(inv => {
                         if (!this.crisisActive) {
                             const trend = 0.95 + Math.random() * 0.1;
@@ -1020,9 +1080,7 @@
                         }
                     });
                     
-                    // Auf Krisen prüfen
                     this.checkForCrisis();
-                    
                     this.renderInvestments();
                 }
 
@@ -1052,51 +1110,191 @@
                 this.wealth += quarterlyProfit;
                 this.influence += Math.floor(quarterlyProfit / 1000000);
 
+                // Feedback für Quartalswechsel
+                const wealthChange = this.wealth - oldWealth;
+                const influenceChange = this.influence - oldInfluence;
+                const prestigeChange = this.prestige - oldPrestige;
+                const networkChange = this.network - oldNetwork;
+                
+                let feedbackMessage = `<strong>Q${this.quarter-1 || 4} ${this.quarter === 1 ? this.year-1 : this.year} Abschluss</strong><br>`;
+                
+                if (quarterlyProfit > 0) {
+                    feedbackMessage += `💰 Quartalsgewinn: € ${this.formatMoney(quarterlyProfit)}<br>`;
+                } else if (quarterlyProfit < 0) {
+                    feedbackMessage += `📉 Quartalsverlust: € ${this.formatMoney(Math.abs(quarterlyProfit))}<br>`;
+                } else {
+                    feedbackMessage += `⚖️ Keine Gewinne/Verluste<br>`;
+                }
+                
+                if (influenceChange > 0) {
+                    feedbackMessage += `🎯 Einfluss: +${influenceChange}<br>`;
+                }
+                if (prestigeChange > 0) {
+                    feedbackMessage += `⭐ Prestige: +${prestigeChange}<br>`;
+                }
+                if (networkChange > 0) {
+                    feedbackMessage += `🌐 Netzwerk: +${networkChange}<br>`;
+                }
+                
+                if (this.crisisActive) {
+                    feedbackMessage += `<br>⚠️ <em>${this.crisisType} - Noch ${this.crisisDuration} Quartale</em>`;
+                }
+
+                this.showActionFeedback(
+                    '📊 QUARTALSABSCHLUSS',
+                    feedbackMessage,
+                    quarterlyProfit >= 0 ? 'positive' : 'negative'
+                );
+
                 this.updateDisplays();
                 this.updateTimeline();
                 this.updateGoals();
                 this.checkWinConditions();
                 
-                // Game Over prüfen
                 if (this.year > this.targetYear) {
                     this.gameOver();
                 }
             }
 
             hostGala() {
-                if (this.crisisActive) return;
+                if (this.crisisActive) {
+                    this.showActionFeedback(
+                        '❌ KRISENMODUS',
+                        'Galas sind während Wirtschaftskrisen nicht angemessen!',
+                        'negative'
+                    );
+                    return;
+                }
 
                 const cost = 500000;
                 if (this.wealth >= cost) {
+                    const oldWealth = this.wealth;
+                    const oldPrestige = this.prestige;
+                    const oldNetwork = this.network;
+                    
                     this.wealth -= cost;
                     this.prestige += 20;
                     this.network += 10;
+                    
+                    this.showActionFeedback(
+                        '🎭 GALA VERANSTALTET',
+                        `<strong>Exklusive Veranstaltung</strong><br>
+                        Kosten: € ${this.formatMoney(cost)}<br>
+                        Prestige: +20<br>
+                        Netzwerk: +10<br><br>
+                        <em>Ihr gesellschaftlicher Einfluss wächst!</em>`,
+                        'positive'
+                    );
+                    
                     this.updateDisplays();
+                } else {
+                    this.showActionFeedback(
+                        '❌ NICHT GENUG KAPITAL',
+                        `Eine Gala kostet € ${this.formatMoney(cost)}.`,
+                        'negative'
+                    );
                 }
             }
 
             mergeCompanies() {
-                if (this.crisisActive) return;
+                if (this.crisisActive) {
+                    this.showActionFeedback(
+                        '❌ KRISENMODUS',
+                        'Fusionen sind in unsicheren Märkten zu riskant!',
+                        'negative'
+                    );
+                    return;
+                }
 
                 if (Object.keys(this.portfolio).length >= 2) {
+                    const oldWealth = this.wealth;
+                    const oldInfluence = this.influence;
                     const mergerBonus = this.wealth * 0.15;
+                    
                     this.wealth += mergerBonus;
                     this.influence += 30;
+                    
+                    this.showActionFeedback(
+                        '🤝 UNTERNEHMENSFUSION',
+                        `<strong>Strategische Konsolidierung</strong><br>
+                        Fusionsbonus: € ${this.formatMoney(mergerBonus)}<br>
+                        Einfluss: +30<br><br>
+                        <em>Durch geschickte Verhandlungen!</em>`,
+                        'positive'
+                    );
+                    
                     this.updateDisplays();
                     this.updateGoals();
+                } else {
+                    this.showActionFeedback(
+                        '❌ NICHT MÖGLICH',
+                        'Sie benötigen mindestens 2 Investments für eine Fusion.',
+                        'negative'
+                    );
                 }
             }
 
             strategicMove() {
                 const cost = 2000000;
                 if (this.wealth >= cost) {
+                    const oldWealth = this.wealth;
                     this.wealth -= cost;
+                    
                     // Zufälligen Investment-Boost
                     const randomInvestment = this.investments[Math.floor(Math.random() * this.investments.length)];
-                    randomInvestment.return *= 1.2; // +20% Boost
+                    const oldReturn = randomInvestment.return;
+                    randomInvestment.return *= 1.2;
+                    
+                    this.showActionFeedback(
+                        '♟️ STRATEGISCHER ZUG',
+                        `<strong>${randomInvestment.name}</strong><br>
+                        Kosten: € ${this.formatMoney(cost)}<br>
+                        Rendite-Boost: +20%<br>
+                        Neue Rendite: ${(randomInvestment.return * 100).toFixed(1)}%<br><br>
+                        <em>Kluger Schachzug!</em>`,
+                        'positive'
+                    );
                     
                     this.renderInvestments();
                     this.updateDisplays();
+                } else {
+                    this.showActionFeedback(
+                        '❌ NICHT GENUG KAPITAL',
+                        `Strategische Züge kosten € ${this.formatMoney(cost)}.`,
+                        'negative'
+                    );
+                }
+            }
+
+            manageCrisis() {
+                if (this.crisisActive) {
+                    const cost = this.wealth * 0.05;
+                    if (this.wealth >= cost) {
+                        const oldWealth = this.wealth;
+                        const oldPrestige = this.prestige;
+                        
+                        this.wealth -= cost;
+                        this.crisisDuration = Math.max(1, this.crisisDuration - 1);
+                        this.prestige += 25;
+                        
+                        this.showActionFeedback(
+                            '🛡️ KRISE GEMANAGT',
+                            `<strong>${this.crisisType}</strong><br>
+                            Kosten: € ${this.formatMoney(cost)}<br>
+                            Krisendauer: -1 Quartal<br>
+                            Prestige: +25<br><br>
+                            <em>Professionelles Krisenmanagement!</em>`,
+                            'positive'
+                        );
+                        
+                        this.updateDisplays();
+                    } else {
+                        this.showActionFeedback(
+                            '❌ NICHT GENUG KAPITAL',
+                            `Krisenmanagement kostet 5% Ihres Vermögens (€ ${this.formatMoney(cost)}).`,
+                            'negative'
+                        );
+                    }
                 }
             }
 
@@ -1124,18 +1322,14 @@
             }
 
             updateGoals() {
-                // Vermögens-Ziel
                 const wealthProgress = (this.wealth / this.targetWealth) * 100;
                 this.goalWealth.textContent = `${Math.min(100, wealthProgress).toFixed(1)}%`;
                 
-                // Assets-Ziel
                 this.goalAssets.textContent = `${this.luxuryAssets.size}/${this.targetAssets}`;
                 
-                // Jahr-Ziel
                 const yearsLeft = this.targetYear - this.year;
                 this.goalYear.textContent = `${yearsLeft} Jahr${yearsLeft !== 1 ? 'e' : ''}`;
                 
-                // Farbliche Hervorhebungen
                 this.goalWealth.style.color = wealthProgress >= 100 ? '#00ff88' : '#d4af37';
                 this.goalAssets.style.color = this.luxuryAssets.size >= this.targetAssets ? '#00ff88' : '#d4af37';
                 this.goalYear.style.color = yearsLeft > 0 ? '#d4af37' : '#ff6b6b';
@@ -1198,6 +1392,77 @@
 
             restartGame() {
                 location.reload();
+            }
+
+            checkForCrisis() {
+                const crisis = this.crises.find(c => c.triggerYear === this.year);
+                if (crisis && !this.crisisActive) {
+                    this.triggerCrisis(crisis);
+                    return;
+                }
+
+                if (this.year > 2025 && Math.random() < 0.05 && !this.crisisActive) {
+                    const randomCrisis = {
+                        name: "Unerwartete Marktvolatilität",
+                        duration: 2 + Math.floor(Math.random() * 3),
+                        affected: ['all'],
+                        riskMultiplier: 1.5 + Math.random() * 1.0,
+                        returnMultiplier: 0.6 + Math.random() * 0.3
+                    };
+                    this.triggerCrisis(randomCrisis);
+                }
+            }
+
+            triggerCrisis(crisis) {
+                this.crisisActive = true;
+                this.crisisDuration = crisis.duration;
+                this.crisisType = crisis.name;
+                
+                this.crisisIndicator.textContent = `⚠️ ${crisis.name} - Dauer: ${crisis.duration} Quartale`;
+                this.crisisIndicator.classList.add('active');
+                this.crisisBtn.style.display = 'block';
+                
+                document.querySelectorAll('.luxury-item').forEach(item => {
+                    if (!item.classList.contains('owned')) {
+                        item.classList.add('crisis-locked');
+                    }
+                });
+
+                this.investments.forEach(inv => {
+                    if (crisis.affected.includes('all') || crisis.affected.includes(inv.id)) {
+                        inv.crisisRiskMultiplier = crisis.riskMultiplier;
+                        inv.crisisReturnMultiplier = crisis.returnMultiplier;
+                        inv.originalRisk = inv.risk;
+                        inv.originalReturn = inv.return;
+                        inv.risk *= crisis.riskMultiplier;
+                        inv.return *= crisis.returnMultiplier;
+                    }
+                });
+
+                this.renderInvestments();
+            }
+
+            endCrisis() {
+                this.crisisActive = false;
+                this.crisisIndicator.classList.remove('active');
+                this.crisisBtn.style.display = 'none';
+                
+                document.querySelectorAll('.luxury-item').forEach(item => {
+                    item.classList.remove('crisis-locked');
+                });
+
+                this.investments.forEach(inv => {
+                    if (inv.originalRisk) {
+                        inv.risk = inv.originalRisk;
+                        inv.return = inv.originalReturn;
+                        delete inv.crisisRiskMultiplier;
+                        delete inv.crisisReturnMultiplier;
+                        delete inv.originalRisk;
+                        delete inv.originalReturn;
+                    }
+                });
+
+                this.renderInvestments();
             }
         }
 
